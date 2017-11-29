@@ -19,11 +19,6 @@ class Player(object): # Player class
     def __init__(self, name):
         self.cards = []
         self.name = name
-        self.players = {}
-
-    def fill_self_players(self, players): # deletes yourself from the players list/dict
-        self.players = dict(players)
-        del self.players[self.name]
 
 
     def start_cards(self, cards): #this function might be redundant...
@@ -59,26 +54,11 @@ class Player(object): # Player class
             print("Your deck is empty.")
 
         else:
-            print(f"{self.name} Deck: {self.cards}")
+            print(f"{self.name}'s Deck: {self.cards}")
 
 
-    def ask_cards(self, choice):
-
-        for player_cards in self.players:
-            for card in player_cards:
-                if choice == card:
-                    self.cards.append(player_cards.pop(choice))
-                    print(f"{player_cards}")
-                    again = True
-                    self.show_cards()
-
-
-    # enter what you want
-    # search other players cards
-    # give their type of cards to you
-    # get nothing if they don't have any
-    #input(">")
-
+    def inquire(self):
+        pass # later
 
 
 
@@ -92,15 +72,23 @@ def getting_started():
     player3 = Player('player3')
     player4 = Player('player4')
 
-    players_list = [player1, player2, player3, player4]
-    players_dict = {'player1': player1, 'player2': player2,
-                    'player3': player3, 'player4': player4}
+    player_list = [player1, player2, player3, player4]
 
-    for player in players_list:
-        player.fill_self_players(players_dict)
-        player.pickup_cards(cards)
-        player.show_cards()
+    for i in player_list:
+        i.start_cards(cards)
+    player1.show_cards()
 
-    player1.ask_cards('4')
+    choice = input('Enter the card: ')
+
+    # make this thing possible for each player instance
+    
+    temp = player_list[1:]
+    for player in temp:
+        for i in player.cards:
+            if i == choice:
+                player1.cards.append(i)
+
+    player1.show_cards()
+
 
 getting_started()

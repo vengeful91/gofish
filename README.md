@@ -1,1 +1,2 @@
-# gofish
+You might think "Why is he making a game that he has never played before?"
+ME: WELL, i might have played it before... i just don't remember it...

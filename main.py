@@ -57,38 +57,39 @@ class Player(object): # Player class
             print(f"{self.name}'s Deck: {self.cards}")
 
 
-    def inquire(self):
-        pass # later
+    def inquire(self, player_dict):
 
+        asking_player = 'player1'
+        choice_card = input('Enter the card: ').upper()
+        choice_player = input("Which player would you like to ask?")
+
+        for card in player_dict[choice_player].cards:
+            if choice_card in card:
+                player_dict[asking_player].cards.append(choice_card)
+                player_dict[choice_player].cards.remove(choice_card)
+
+        player_dict[asking_player].show_cards()
+        player_dict[choice_player].show_cards()
 
 
     # def something(): You can only do certain actions a certain amount of time.
 
-def getting_started():
-    cards = fill_cards()
 
-    player1 = Player('player1')
-    player2 = Player('player2')
-    player3 = Player('player3')
-    player4 = Player('player4')
+cards = fill_cards()
 
-    player_list = [player1, player2, player3, player4]
+player1 = Player('player1')
+player2 = Player('player2')
+player3 = Player('player3')
+player4 = Player('player4')
 
-    for i in player_list:
-        i.start_cards(cards)
-    player1.show_cards()
+player_dict = {'player1': player1, 'player2': player2,
+               'player3': player3, 'player4': player4}
 
-    choice = input('Enter the card: ')
-
-    # make this thing possible for each player instance
-    
-    temp = player_list[1:]
-    for player in temp:
-        for i in player.cards:
-            if i == choice:
-                player1.cards.append(i)
-
-    player1.show_cards()
+for i in player_dict:
+    player_dict[i].start_cards(cards)
+    player_dict[i].show_cards()
 
 
-getting_started()
+# make this thing possible for each player instance
+
+player_dict['player1'].inquire(player_dict)

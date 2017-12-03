@@ -3,8 +3,19 @@ import random
 types = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K']
 
 
+def fill_cards(types): # fills/shuffles cards list
+    cards = []
+    for single_type in types:
+        for line in range(4):
+            cards.append(single_type)
+
+    random.shuffle(cards)
+    return cards
+
+
 class Player(object): # Player class
-    center_deck = fill_cards(types)
+
+    cards = fill_cards(types)
 
     def __init__(self, name): # Basic Init Function
         self.cards = []
@@ -15,7 +26,7 @@ class Player(object): # Player class
 
     def start_cards(self, cards): # Give player 5 cards to start
         """Adds 5 cards to self.cards"""
-        for i in range(13):
+        for i in range(5):
             self.cards.append(cards.pop())
 
 
@@ -49,24 +60,18 @@ class Player(object): # Player class
             print(f"{self.name}'s Deck: {self.cards}")
 
 
-    def inquire(self, player_dict): # For asking for a card type
-        #shoif asking_times
-        choice_card = input('Enter the card:').upper()
-        choice_player = input("Enter the player: ").lower()
+    def inquire(self, player_dict, choice_card, choice_player): # For asking for a card type
+        taken = 0
+        if choice_card in player_dict[choice_player].cards:
 
-        take = 0
-
-        for card in self.player_dict[choice_player].cards:
-            if choice_card in card:
-                self.cards.append(choice_card)
-                self.player_dict[choice_player].cards.remove(choice_card)
-                take += 1
-
-        if take > 0:
-            self.inquire(self.player_dict)
+            for card in self.player_dict[choice_player].cards:
+                if choice_card in card:
+                    self.cards.append(choice_card)
+                    self.player_dict[choice_player].cards.remove(choice_card)
+                    taken += 1
 
 
-    def set_of_cards(self):
+    def look_for_sets(self): # searches through self.cards for sets of 4
         for i in types:
             if self.cards.count(i) >= 4:
                 for x in range(4):
@@ -104,31 +109,42 @@ class Player(object): # Player class
         self.player_dict = dict(player_dict)
         del self.player_dict[self.name]
 
-        looping = True
+
         tries = 0
 
         while looping:
 
-            if something: # check if everyone has cards and if the center deck is empty
-                pass
             action = input('Action: ')
 
-            elif action == 'inquire':
-                inquire(player_dict)
-
-            elif action == 'pick up cards' and tries == 1:
-                pickup_cards(cards)
+            if False: # check if everyone has cards and if the center deck is empty
+                pass
 
 
 
+            elif action == 'inquire' and tries == 0:
+                self.inquire(player_dict)
+                tries += 1
 
+            elif action == 'inquire' and tries > 0:
+                print("You've already asked for a card.")
+                print("Pick you a card instead.")
 
+            elif action == 'pick up card' and tries == 0:
+                print("You haven't asked for a card yet.")
+                print("Ask one of the other players for a card.")
 
-def fill_cards(types): # fills/shuffles cards list
-    cards = []
-    for single_type in types:
-        for line in range(4):
-            cards.append(single_type)
+            elif action == 'pick up card' and tries == 1:
+                self.pickup_cards(cards)
 
-    random.shuffle(cards)
-    return cards
+            elif action == 'look for set':
+                self.look_for_sets()
+
+            elif action == 'show cards':
+                self.show_cards()
+
+            elif action == 'sort cards':
+                self.sort_cards()
+                self.show_cards()
+
+            else:
+                print("I don't know what to...")

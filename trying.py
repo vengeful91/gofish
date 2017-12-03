@@ -1,29 +1,26 @@
-# Figured out!!!! Good night
+
 class Simple(object):
+    v1 = [3, 2, 1]
 
     def __init__(self, name):
         self.name = name
-        self.players = {}
+        self.v1 = ['different']
 
-    def del_somethin(self):
-        self.players = dict(players)
-        del self.players[self.name]
+    def print_something(self):
+        print(Simple.v1)
 
-player1 = Simple('player1')
-player2 = Simple('player2')
-player3 = Simple('player3')
-player4 = Simple('player4')
+    def remove_something(self):
+        destroy = Simple.v1.pop()
+        self.v1.append(destroy)
 
-players = {'player1': player1, 'player2': player2,
-           'player3': player3, 'player4': player4}
 
-player1.del_somethin()
-player2.del_somethin()
-player3.del_somethin()
-player4.del_somethin()
-input()
-for i in player1.players:
-    print(i)
-input()
-for i in player2.players:
-    print(i)
+first = Simple('first')
+second = Simple('second')
+
+first.print_something()
+second.print_something()
+
+first.remove_something()
+
+first.print_something()
+second.print_something()

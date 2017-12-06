@@ -1,34 +1,32 @@
-go_fish_ascii = """
-|   _____   ____    ______  _____   _____  _    _    |
-|  / ____| / __ \  |  ____||_   _| / ____|| |  | |   |
-| | |  __ | |  | | | |__     | |  | (___  | |__| |   |
-| | | |_ || |  | | |  __|    | |   \___ \ |  __  |   |
-| | |__| || |__| | | |      _| |_  ____) || |  | |   |
-|  \_____| \____/  |_|     |_____||_____/ |_|  |_|   |
-"""
+# basics for the display system
+ 
+import os
 
-class Simple(object):
-    v1 = [3, 2, 1]
+def screen(response_list):
+    os.system('cls')
+    print('Go fish')
+    print('- ' * 10)
+    for response in response_list:
+        print(response)
 
-    def __init__(self, name):
-        self.name = name
-        self.v1 = ['different']
+response_list = []
+screen(response_list)
 
-    def print_something(self):
-        print(Simple.v1)
+while True:
+    action = input('> ')
 
-    def remove_something(self):
-        destroy = Simple.v1.pop()
-        self.v1.append(destroy)
+    if action == 'a':
+        response_list = ['Yeah!', 'You did it!']
+        screen(response_list)
 
+    elif action == 'b':
+        response_list = ['Nope!', 'You got it wrong!']
+        screen(response_list)
 
-first = Simple('first')
-second = Simple('second')
+    elif action == 'c':
+        response_list = ['WE', 'ARE', 'NO', "LONGER"]
+        screen(response_list)
 
-first.print_something()
-second.print_something()
-
-first.remove_something()
-
-first.print_something()
-second.print_something()
+    else:
+        response_list = ["I'm sorry what?"]
+        screen(response_list)

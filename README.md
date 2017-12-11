@@ -1,4 +1,4 @@
-# You need new_main.py, player.py, display.py in one file.
+You need new_main.py, player.py, display.py in one file.
 # Then run new_main.py!
 # - - - - - - - - - - - - - - - - 
 # You might think "Why is he making a game that he has never played before?"

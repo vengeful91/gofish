@@ -12,11 +12,13 @@ def screen(response_list, player):
     for i in response_list:
         print(i)
 
+
 def screen_next():
     os.system('cls')
     print('Go fish')
     print('- ' * 10)
     print("STARTING NEXT TURN!")
+
 
 def start_screen():
     os.system('cls')

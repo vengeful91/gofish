@@ -15,6 +15,7 @@ def fill_cards(): # fills/shuffles cards list
 
 
 class Player(object):
+    # I'm going to try to finish the game without adding any extra methods to this.
 
     cards = fill_cards()
 
@@ -22,42 +23,9 @@ class Player(object):
         self.name = name
         self.cards = []
         self.player_dict = {}
+        self.card_sets = []
 
-    def inquire(self, current_player):
-        response = ['Enter the player and card.', '(Player, Card)',]
-        screen(response, current_player)
-        player, card = inquire_help()
-
-        taken = 0
-
-        if card in self.player_dict[player].cards:
-            for i in self.player_dict[player].cards:
-                if i == card:
-                    self.cards.append(card)
-                    taken += 1
-
-            for i in range(taken):
-                self.player_dict[player].cards.remove(card)
-
-            response = [f"You've taken {taken} '{card}' cards from {player}",
-                         "Ask again. Press Enter to continue."]
-
-            screen(response, current_player)
-            input()
-            self.inquire(current_player)
-
-        # broken. Also he might have already taken a card tbh
-        elif card not in self.player_dict[player].cards:
-            response = ["{} didn't have any '{}' cards.".format(player, card),
-                         "Pick up a card instead"]
-            return response
-
-        else:
-            response = ['Nothing']
-            return response
-
-
-    def pickup_cards(self):
+    def pickup_cards(self, player):
         if Player.cards == []:
             response = ['The main deck is empty.',
                         'It is now the next players turn']
@@ -79,13 +47,14 @@ class Player(object):
 
 
         elif len(self.cards) >= 1 and len(Player.cards) >= 1:
-            self.cards.append(Player.cards.pop())
-            response = ['You picked up 1 card.']
+            card = Player.cards.pop()
+            self.cards.append(card)
+            response = [f"You picked up 1 '{card}' card."]
             return response
 
         else:
             response_list = ['pickup_cards else']
-            return response_list
+            return response
 
     def show_cards(self):
         self.sort_cards()
@@ -96,6 +65,7 @@ class Player(object):
             print(f'Cards: {self.cards}\n')
 
     def sort_cards(self):
+
         forward_dict = {'A': 1, '2': 2, '3': 3, '4': 4, '5': 5,
                         '6': 6, '7': 7, '8': 8, '9': 9, '10': 10,
                         'J': 11, 'Q': 12, 'K': 13}
@@ -122,20 +92,90 @@ class Player(object):
         self.player_dict = dict(player_dict)
         del self.player_dict[self.name]
 
+    def look_for_sets(self):
+        types = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K']
+        for i in types:
+            if self.cards.count(i) >= 4:
+                for x in range(4):
+                    self.cards.remove(i)
 
-def test_win():
-    pass
-    # Tests to see if someone has won.
+                self.card_sets.append(i)
 
 
-def inquire_help():
-    response = ["Enter the player and card. (Player, Card)"]
+# Checks to see it someone in the game won
+def test_win(player_dict):
 
-    choice = input('> ')
+    empty = 0
 
-    choices = choice.split(', ')
+    for k, v in player_dict.items():
+        if len(v.cards) == 0:
+            empty += 1
 
-    player = choices[0].lower()
-    card = choices[1].upper()
+    if len(Player.cards) == 0 and empty == len(player_dict):
+        print("End game!")
 
-    return player, card
+        temp_dict = {}
+
+        for k, v in player_dict.items():
+            v.look_for_sets()
+            temp_dict[v.name] = len(v.card_sets)
+            print(f'{k} has {len(v.card_sets)} books.')
+
+
+def check_inquire_input(player, choice_player, choice_card):
+    types = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K']
+
+    choice_player = choice_player.strip().lower()
+    choice_card = choice_card.strip().upper()
+
+    if choice_player not in player.player_dict:
+        print("Invalid Player.")
+        print('Re-enter your player choice.')
+        choice_player = input('Enter the player name -> ')
+        check_inquire_input(player, choice_player, choice_card)
+
+    elif choice_card not in types:
+        print("Invalid Card Type.")
+        print('Re-enter your card choice.')
+        choice_card = input('Enter the card type -> ')
+        check_inquire_input(player, choice_player, choice_card)
+
+    return choice_player, choice_card
+
+
+def inquire(player):
+    current_cards = len(player.cards)
+    response = ['Inquire']
+    while True:
+        screen(response, player)
+
+        choice_player = input('Enter the player name -> ')
+        choice_card = input('Enter the card type -> ')
+
+        choice_player, choice_card = check_inquire_input(player, choice_player, choice_card)
+
+        taken = 0
+        if choice_card in player.player_dict[choice_player].cards:
+            for i in player.player_dict[choice_player].cards:
+                if choice_card == i:
+                    player.cards.append(choice_card)
+                    taken += 1
+
+            for _ in range(taken):
+                player.player_dict[choice_player].cards.remove(choice_card)
+
+            response = [f"You took {taken} '{choice_card}' card from {choice_player}.",
+                         "You can ask another time."]
+
+        elif choice_card not in player.player_dict[choice_player].cards and current_cards == len(player.cards):
+            response = [f"{choice_player} didn't have any '{choice_card}' cards.",
+                         "Pick up a card instead."]
+            return response
+
+        elif choice_card not in player.player_dict[choice_player].cards and current_cards < len(player.cards):
+            response = [f"{choice_player} didn't have any '{choice_card}' cards."]
+            return response
+
+        else:
+            response = ['LOCATION inquire(): INPUT INVALID']
+            screen(response, player)

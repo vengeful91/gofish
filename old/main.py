@@ -30,8 +30,7 @@ try:
 
 except KeyboardInterrupt:
     print("\nExiting...")
-<<<<<<< HEAD:old/main.py
- 
+
+
 =======
 # https://youtu.be/psiq5imRIj8 Welcome to Earth
->>>>>>> 9c982fa09618558bd0f2d0dd3ab860d0ab6e1ba5:main.py

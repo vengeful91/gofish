@@ -18,19 +18,7 @@ for player in player_list:
     player.sort_cards()
 # END: Basic Startup
 
-# Testing test_win
-Player.cards = []
-player1.cards = []
-player2.cards = []
-
-
-player1.card_sets.append('A')
-player1.card_sets.append('2')
-player1.card_sets.append('10')
-player2.card_sets.append('J')
-player2.card_sets.append('K')
-
-# Not done yet but i think im getting there
+# If this isn't the messiest game ever made, i don't know what is
 while True:
     for player in player_list:
 
@@ -38,6 +26,7 @@ while True:
         inquire_run = 0
 
         while True:
+            player.look_for_sets()
             test_win(player_dict)
 
             action = input('> ')

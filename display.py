@@ -9,6 +9,7 @@ def screen(response_list, player):
     print("Player: ", player.name)
     print('- ' * 10)
     player.show_cards()
+    player.show_sets()
     for i in response_list:
         print(i)
 

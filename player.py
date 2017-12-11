@@ -60,9 +60,16 @@ class Player(object):
         self.sort_cards()
 
         if self.cards == []:
-            print('Your deck is empty.')
+            print('Cards: None')
         else:
-            print(f'Cards: {self.cards}\n')
+            print(f'Cards: {self.cards}')
+
+    def show_sets(self):
+        if self.card_sets == []:
+            print("Sets: None")
+
+        else:
+            print(f'Sets: {self.card_sets}\n')
 
     def sort_cards(self):
 
@@ -119,7 +126,12 @@ def test_win(player_dict):
         for k, v in player_dict.items():
             v.look_for_sets()
             temp_dict[v.name] = len(v.card_sets)
-            print(f'{k} has {len(v.card_sets)} books.')
+
+        winner = max(temp_dict, key=temp_dict.get)
+        print(f'{winner} won!')
+        exit(0)
+
+
 
 
 def check_inquire_input(player, choice_player, choice_card):

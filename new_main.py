@@ -32,8 +32,9 @@ while True:
             action = input('> ')
 
             if action == 'inquire':
-
-                if len(player.cards) == current_cards and inquire_run > 0:
+                # I think you should make the line below shorter
+                # You can change bind the len_card = len(player.cards)
+                if len(player.cards) == current_cards and inquire_run > 0: 
                     response = ['You have already asked and failed.',
                                 'Pick up a card instead.']
                     screen(response, player)
